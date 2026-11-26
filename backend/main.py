@@ -2,6 +2,11 @@ import json
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from model_builder import build_model
+from train import train_model
+from train import (
+    train_model,
+    SimpleCNN
+)
 
 app = FastAPI()
 
@@ -33,3 +38,14 @@ def receive_architecture(data: dict):
         "layer_count": len(data["layers"]),
         "model": str(model)
     }
+
+@app.post("/train")
+def train():
+
+    model = SimpleCNN()
+
+    results = train_model(
+        model
+    )
+
+    return results

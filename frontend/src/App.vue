@@ -5,6 +5,7 @@ import axios from "axios";
 
 const layers = ref([]);
 const modelInfo = ref("");
+const trainingResults = ref("");
 
 function addConv2D() {
   layers.value.push({
@@ -58,6 +59,37 @@ async function sendArchitecture() {
   }
 }
 
+async function trainModel() {
+
+  try {
+
+    trainingResults.value = "Training...";
+
+    const response =
+      await axios.post(
+        "http://127.0.0.1:8000/train"
+      );
+
+    console.log(response.data);
+
+    trainingResults.value =
+      JSON.stringify(
+        response.data,
+        null,
+        2
+      );
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    trainingResults.value =
+      "Training failed";
+
+  }
+}
+
 </script>
 
 <template>
@@ -86,6 +118,10 @@ async function sendArchitecture() {
 
       <button @click="sendArchitecture">
         Send Architecture
+      </button>
+
+      <button @click="trainModel">
+        Train Model
       </button>
 
     </div>
@@ -168,6 +204,13 @@ async function sendArchitecture() {
       <h2>Info</h2>
       <h3>Generated Model</h3>
       <pre>{{ modelInfo }}</pre>
+      <h3>
+        Training Results
+      </h3>
+
+      <pre>
+      {{ trainingResults }}
+      </pre>
       <p>
         Layer Count:
         {{ layers.length }}
