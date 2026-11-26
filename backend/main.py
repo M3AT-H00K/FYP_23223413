@@ -1,6 +1,7 @@
 import json
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from model_builder import build_model
 
 app = FastAPI()
 
@@ -21,13 +22,11 @@ def root():
 @app.post("/architecture")
 def receive_architecture(data: dict):
 
-    print("\n=== RECEIVED ARCHITECTURE ===")
-    print(
-        json.dumps(
-            data,
-            indent=4
-        )
-    )
+    model = build_model(data)
+
+    print("\n=== GENERATED MODEL ===\n")
+
+    print(model)
 
     return {
         "status": "received",
