@@ -1,3 +1,4 @@
+import json
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,8 +18,18 @@ def root():
         "message": "Backend is working!"
     }
 
-@app.get("/test")
-def test():
+@app.post("/architecture")
+def receive_architecture(data: dict):
+
+    print("\n=== RECEIVED ARCHITECTURE ===")
+    print(
+        json.dumps(
+            data,
+            indent=4
+        )
+    )
+
     return {
-        "status": "success"
+        "status": "received",
+        "layer_count": len(data["layers"])
     }
