@@ -11,16 +11,16 @@ def build_model(config):
 
             layers.append(
                 nn.Conv2d(
-                    in_channels=1,
-                    out_channels=6,
-                    kernel_size=5
+                    in_channels=layer["in_channels"],
+                    out_channels=layer["out_channels"],
+                    kernel_size=layer["kernel_size"]
                 )
             )
 
         elif layer["type"] == "MaxPool2D":
 
-            layers.append(
-                nn.MaxPool2d(2)
+            nn.MaxPool2d(
+                layer["kernel_size"]
             )
 
         elif layer["type"] == "Flatten":
@@ -33,8 +33,8 @@ def build_model(config):
 
             layers.append(
                 nn.Linear(
-                    576,
-                    10
+                    layer["in_features"],
+                    layer["out_features"]
                 )
             )
 
