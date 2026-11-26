@@ -8,13 +8,17 @@ const modelInfo = ref("");
 
 function addConv2D() {
   layers.value.push({
-    type: "Conv2D"
+    type: "Conv2D",
+    in_channels: 1,
+    out_channels: 6,
+    kernel_size: 5
   });
 }
 
 function addMaxPool() {
   layers.value.push({
-    type: "MaxPool2D"
+    type: "MaxPool2D",
+    kernel_size: 2
   });
 }
 
@@ -26,7 +30,9 @@ function addFlatten() {
 
 function addLinear() {
   layers.value.push({
-    type: "Linear"
+    type: "Linear",
+    in_features: 576,
+    out_features: 10
   });
 }
 
@@ -91,9 +97,68 @@ async function sendArchitecture() {
       <div
         v-for="(layer,index) in layers"
         :key="index"
+        class="layer-card"
       >
-        {{ index + 1 }}.
-        {{ layer.type }}
+
+        <h3>
+          {{ index + 1 }}.
+          {{ layer.type }}
+        </h3>
+
+        <div v-if="layer.type === 'Conv2D'">
+
+          In Channels
+
+          <input
+            v-model.number="layer.in_channels"
+            type="number"
+          />
+
+          Out Channels
+
+          <input
+            v-model.number="layer.out_channels"
+            type="number"
+          />
+
+          Kernel Size
+
+          <input
+            v-model.number="layer.kernel_size"
+            type="number"
+          />
+
+        </div>
+
+        <div v-if="layer.type === 'MaxPool2D'">
+
+          Kernel Size
+
+          <input
+            v-model.number="layer.kernel_size"
+            type="number"
+          />
+
+        </div>
+
+        <div v-if="layer.type === 'Linear'">
+
+          In Features
+
+          <input
+            v-model.number="layer.in_features"
+            type="number"
+          />
+
+          Out Features
+
+          <input
+            v-model.number="layer.out_features"
+            type="number"
+          />
+
+        </div>
+
       </div>
 
     </div>
@@ -141,6 +206,17 @@ async function sendArchitecture() {
 button{
   display:block;
   margin-bottom:10px;
+}
+
+.layer-card{
+  border:1px solid gray;
+  padding:10px;
+  margin-bottom:10px;
+}
+
+input{
+  display:block;
+  margin-bottom:8px;
 }
 
 </style>
