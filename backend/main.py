@@ -30,5 +30,6 @@ def receive_architecture(data: dict):
 
     return {
         "status": "received",
-        "layer_count": len(data["layers"])
+        "layer_count": len(data["layers"]),
+        "model": str(model)
     }

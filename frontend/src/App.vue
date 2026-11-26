@@ -4,6 +4,7 @@ import { ref } from "vue";
 import axios from "axios";
 
 const layers = ref([]);
+const modelInfo = ref("");
 
 function addConv2D() {
   layers.value.push({
@@ -40,9 +41,7 @@ async function sendArchitecture() {
       }
     );
 
-    alert(
-      JSON.stringify(response.data)
-    );
+    modelInfo.value = response.data.model;
 
   } catch(error) {
 
@@ -102,7 +101,8 @@ async function sendArchitecture() {
     <div class="info-panel">
 
       <h2>Info</h2>
-
+      <h3>Generated Model</h3>
+      <pre>{{ modelInfo }}</pre>
       <p>
         Layer Count:
         {{ layers.length }}
